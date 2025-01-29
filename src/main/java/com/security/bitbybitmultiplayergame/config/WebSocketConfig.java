@@ -9,12 +9,17 @@ import org.springframework.web.socket.config.annotation.*;
 @Configuration
 @EnableWebSocket
 public class WebSocketConfig implements   WebSocketConfigurer{
-    @Override
-    public void registerWebSocketHandlers(WebSocketHandlerRegistry registry) {
-        registry.addHandler( new SocketConnectionHandler(), "/hello")
-                .setAllowedOrigins("*");
+
+    private final SocketConnectionHandler socketConnectionHandler;
+
+    public WebSocketConfig(SocketConnectionHandler socketConnectionHandler) {
+        this.socketConnectionHandler = socketConnectionHandler;
     }
 
+    @Override
+    public void registerWebSocketHandlers(WebSocketHandlerRegistry registry) {
+        registry.addHandler(socketConnectionHandler, "/event").setAllowedOrigins("*");
+    }
 
 
 }
